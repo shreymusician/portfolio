@@ -59,7 +59,7 @@ export function ProjectsBrowser({ projects }: { projects: ProjectDTO[] }) {
       )}
 
       {filtered.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-[var(--color-border)] p-10 text-center text-sm text-[var(--color-text-secondary)]">
+        <p className="rounded-xl border border-dashed border-[var(--color-border)] p-10 text-center text-base text-[var(--color-text-secondary)]">
           No projects match this filter yet.
         </p>
       ) : (

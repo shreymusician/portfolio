@@ -40,7 +40,7 @@ export default async function ProjectDetailPage({
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <Link
         href="/projects"
-        className="text-sm font-medium text-[var(--color-accent)] hover:underline"
+        className="text-base font-medium text-[var(--color-accent)] hover:underline"
       >
         ← All projects
       </Link>
@@ -50,7 +50,7 @@ export default async function ProjectDetailPage({
           {project.title}
         </h1>
         {project.impactMetric && (
-          <span className="shrink-0 rounded-full bg-[var(--color-success)]/10 px-3 py-1 text-sm font-medium text-[var(--color-success)]">
+          <span className="shrink-0 rounded-full bg-[var(--color-success)]/10 px-3 py-1 text-base font-medium text-[var(--color-success)]">
             {project.impactMetric}
           </span>
         )}
@@ -75,7 +75,7 @@ export default async function ProjectDetailPage({
         {project.techStack.map((tech) => (
           <li
             key={tech}
-            className="rounded-md border border-[var(--color-border)] px-2.5 py-1 font-mono text-xs text-[var(--color-text-secondary)]"
+            className="rounded-md border border-[var(--color-border)] px-2.5 py-1 font-mono text-sm text-[var(--color-text-secondary)]"
           >
             {tech}
           </li>
@@ -88,7 +88,7 @@ export default async function ProjectDetailPage({
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+            className="inline-flex h-11 items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-base font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
           >
             View on GitHub
           </a>
@@ -98,7 +98,7 @@ export default async function ProjectDetailPage({
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--color-accent)] px-4 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 items-center justify-center rounded-md bg-[var(--color-accent)] px-4 text-base font-medium text-white hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
           >
             Live demo
           </a>

@@ -17,7 +17,7 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
 
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-medium text-[var(--color-text-primary)]">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
             <Link
               href={`/projects/${project.slug}`}
               className="hover:text-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
@@ -26,13 +26,13 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
             </Link>
           </h3>
           {project.impactMetric && (
-            <span className="shrink-0 rounded-full bg-[var(--color-success)]/10 px-2 py-0.5 text-xs font-medium text-[var(--color-success)]">
+            <span className="shrink-0 rounded-full bg-[var(--color-success)]/10 px-2.5 py-1 text-sm font-medium text-[var(--color-success)]">
               {project.impactMetric}
             </span>
           )}
         </div>
 
-        <p className="text-sm text-[var(--color-text-secondary)]">
+        <p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
           {project.description}
         </p>
 
@@ -40,14 +40,14 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
           {project.techStack.map((tech) => (
             <li
               key={tech}
-              className="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-xs text-[var(--color-text-secondary)]"
+              className="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-sm text-[var(--color-text-secondary)]"
             >
               {tech}
             </li>
           ))}
         </ul>
 
-        <div className="mt-auto flex gap-4 pt-2 text-sm font-medium">
+        <div className="mt-auto flex gap-4 pt-2 text-base font-medium">
           {project.githubUrl && (
             <a
               href={project.githubUrl}

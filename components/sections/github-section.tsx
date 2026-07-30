@@ -84,7 +84,7 @@ export async function GitHubSection() {
       />
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto flex max-w-2xl justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-success)]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-3.5 py-1.5 text-sm font-semibold uppercase tracking-widest text-[var(--color-success)]">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-success)] opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-success)]" />
@@ -109,7 +109,7 @@ export async function GitHubSection() {
 
         {repos.length === 0 ? (
           <Reveal delay={0.15} className="mt-14">
-            <div className="glass-panel rounded-2xl p-12 text-center text-sm text-[var(--color-text-secondary)]">
+            <div className="glass-panel rounded-2xl p-12 text-center text-base text-[var(--color-text-secondary)]">
               GitHub data isn&apos;t available right now. Check back soon, or
               visit the profile link above directly.
             </div>
@@ -125,10 +125,10 @@ export async function GitHubSection() {
             {calendar && (
               <Reveal delay={0.1} className="mt-10">
                 <div className="glass-panel overflow-hidden rounded-2xl p-6 sm:p-8">
-                  <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
                     Contribution Activity
                   </h3>
-                  <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                  <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                     Last 12 months, tinted to match the portfolio palette.
                   </p>
                   <div className="mt-6">
@@ -141,7 +141,7 @@ export async function GitHubSection() {
             {pinned.length > 0 && (
               <div className="mt-16">
                 <Reveal>
-                  <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
                     Pinned Projects
                   </h3>
                 </Reveal>
@@ -158,13 +158,13 @@ export async function GitHubSection() {
             {languages.length > 0 && (
               <Reveal delay={0.15} className="mt-16">
                 <div className="glass-panel rounded-2xl p-6 sm:p-8">
-                  <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
                     Top languages
                   </h3>
                   <ul className="mt-4 flex flex-col gap-3">
                     {languages.slice(0, 6).map((lang) => (
                       <li key={lang.language} className="flex items-center gap-3">
-                        <span className="w-24 shrink-0 truncate font-mono text-xs text-[var(--color-text-primary)]">
+                        <span className="w-28 shrink-0 truncate font-mono text-sm text-[var(--color-text-primary)]">
                           {lang.language}
                         </span>
                         <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/5">
@@ -173,7 +173,7 @@ export async function GitHubSection() {
                             style={{ width: `${lang.percentage}%` }}
                           />
                         </div>
-                        <span className="w-10 shrink-0 text-right font-mono text-xs text-[var(--color-text-secondary)]">
+                        <span className="w-12 shrink-0 text-right font-mono text-sm text-[var(--color-text-secondary)]">
                           {lang.percentage}%
                         </span>
                       </li>
@@ -186,7 +186,7 @@ export async function GitHubSection() {
             {topRepos.length > 0 && (
               <div className="mt-16">
                 <Reveal>
-                  <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
                     More Repositories
                   </h3>
                 </Reveal>
@@ -200,19 +200,19 @@ export async function GitHubSection() {
                         className="glass-panel flex h-full flex-col gap-2 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--color-accent)] hover:shadow-[0_20px_60px_-15px_var(--glow-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="truncate font-mono text-sm font-medium text-[var(--color-text-primary)]">
+                          <span className="truncate font-mono text-base font-medium text-[var(--color-text-primary)]">
                             {repo.name}
                           </span>
-                          <span className="flex shrink-0 items-center gap-1 text-xs text-[var(--color-highlight)]">
+                          <span className="flex shrink-0 items-center gap-1 text-sm text-[var(--color-highlight)]">
                             ★ {repo.stars}
                           </span>
                         </div>
                         {repo.description && (
-                          <p className="line-clamp-2 text-sm text-[var(--color-text-secondary)]">
+                          <p className="line-clamp-2 text-base text-[var(--color-text-secondary)]">
                             {repo.description}
                           </p>
                         )}
-                        <div className="mt-auto flex items-center justify-between pt-1 text-xs text-[var(--color-text-secondary)]">
+                        <div className="mt-auto flex items-center justify-between pt-1 text-sm text-[var(--color-text-secondary)]">
                           <span>{repo.language ?? "—"}</span>
                           <span>Updated {formatRelativeDate(repo.updatedAt)}</span>
                         </div>
@@ -225,27 +225,27 @@ export async function GitHubSection() {
 
             <div className="mt-16">
               <Reveal>
-                <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
                   Recent public GitHub activity
                 </h3>
-                <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                   A window into recent public events — not a complete commit
                   history.
                 </p>
               </Reveal>
               {activity.length === 0 ? (
-                <p className="mt-4 text-sm text-[var(--color-text-secondary)]">
+                <p className="mt-4 text-base text-[var(--color-text-secondary)]">
                   No recent public activity to show.
                 </p>
               ) : (
                 <RevealGroup className="mt-4 flex flex-col gap-2">
                   {activity.map((item) => (
                     <RevealItem key={item.id}>
-                      <div className="glass-panel flex items-center justify-between gap-3 rounded-xl px-5 py-3 text-sm">
+                      <div className="glass-panel flex items-center justify-between gap-3 rounded-xl px-5 py-3 text-base">
                         <span className="truncate text-[var(--color-text-primary)]">
                           {item.label}
                         </span>
-                        <span className="shrink-0 font-mono text-xs text-[var(--color-text-secondary)]">
+                        <span className="shrink-0 font-mono text-sm text-[var(--color-text-secondary)]">
                           {formatRelativeDate(item.createdAt)}
                         </span>
                       </div>

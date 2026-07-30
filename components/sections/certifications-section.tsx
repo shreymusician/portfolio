@@ -36,7 +36,7 @@ export async function CertificationsSection() {
 
         {Object.keys(grouped).length === 0 ? (
           <Reveal className="mt-14">
-            <div className="glass-panel rounded-2xl p-12 text-center text-sm text-[var(--color-text-secondary)]">
+            <div className="glass-panel rounded-2xl p-12 text-center text-base text-[var(--color-text-secondary)]">
               No certifications yet.
             </div>
           </Reveal>
@@ -62,13 +62,13 @@ export async function CertificationsSection() {
                           />
                         </div>
                         <div className="p-5">
-                          <p className="text-xs font-medium text-[var(--color-accent-hover)]">
+                          <p className="text-sm font-medium text-[var(--color-accent-hover)]">
                             {cert.issueDate}
                           </p>
-                          <h4 className="mt-2 font-semibold text-[var(--color-text-primary)]">
+                          <h4 className="mt-2 text-lg font-semibold text-[var(--color-text-primary)]">
                             {cert.title}
                           </h4>
-                          <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                          <p className="mt-1 text-base text-[var(--color-text-secondary)]">
                             {cert.issuer}
                           </p>
                           {cert.verifyUrl && (
@@ -76,7 +76,7 @@ export async function CertificationsSection() {
                               href={cert.verifyUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="mt-4 inline-flex text-xs font-medium text-[var(--color-accent-hover)] hover:underline"
+                              className="mt-4 inline-flex text-sm font-medium text-[var(--color-accent-hover)] hover:underline"
                             >
                               Verify Certificate →
                             </a>

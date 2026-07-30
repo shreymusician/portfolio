@@ -33,7 +33,7 @@ export function StatsGrid({ stats }: { stats: GithubStat[] }) {
           <p className="text-2xl font-bold text-[var(--color-text-primary)] sm:text-3xl">
             <CountUp value={stat.value} />
           </p>
-          <p className="mt-1.5 text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
+          <p className="mt-1.5 text-sm font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
             {stat.label}
           </p>
         </motion.div>

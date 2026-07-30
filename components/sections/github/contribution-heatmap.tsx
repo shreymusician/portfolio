@@ -96,7 +96,7 @@ export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--color-text-secondary)]">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--color-text-secondary)]">
         <span className="min-h-[1em]">
           {hovered
             ? `${hovered.count} contribution${hovered.count === 1 ? "" : "s"} on ${new Date(hovered.date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`

@@ -22,10 +22,10 @@ export async function ProjectsSection() {
         <Reveal delay={0.1} className="mt-14">
           {projects.length === 0 ? (
             <div className="glass-panel rounded-2xl p-12 text-center">
-              <p className="text-sm font-medium text-[var(--color-text-primary)]">
+              <p className="text-lg font-semibold text-[var(--color-text-primary)]">
                 Coming Soon
               </p>
-              <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              <p className="mt-2 text-base text-[var(--color-text-secondary)]">
                 I&apos;m working on some exciting projects. Check back soon to
                 see what I&apos;ve built.
               </p>

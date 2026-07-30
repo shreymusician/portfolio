@@ -60,7 +60,7 @@ export function AboutSection() {
                   href={link.href}
                   target={link.href.startsWith("mailto:") ? undefined : "_blank"}
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-4 py-2 text-sm font-medium text-[var(--color-text-primary)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:bg-white/[0.06]"
+                  className="inline-flex items-center justify-center rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-4 py-2 text-base font-medium text-[var(--color-text-primary)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:bg-white/[0.06]"
                 >
                   {link.label}
                 </a>
@@ -78,7 +78,7 @@ export function AboutSection() {
               <p className="mt-3 font-medium text-[var(--color-text-primary)]">
                 {siteConfig.education.degree}
               </p>
-              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+              <p className="mt-1 text-base text-[var(--color-text-secondary)]">
                 {siteConfig.education.school} · {siteConfig.education.period}
               </p>
             </div>
@@ -96,10 +96,10 @@ export function AboutSection() {
                       aria-hidden="true"
                       className="absolute -left-[1.4rem] top-1.5 h-2 w-2 rounded-full bg-[var(--color-highlight)]"
                     />
-                    <p className="font-mono text-xs text-[var(--color-text-secondary)]">
+                    <p className="font-mono text-sm text-[var(--color-text-secondary)]">
                       {item.date}
                     </p>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                    <p className="text-base font-medium text-[var(--color-text-primary)]">
                       {item.title}
                     </p>
                   </li>
@@ -117,14 +117,14 @@ export function AboutSection() {
             <RevealGroup className="mt-5 flex flex-col gap-5">
               {siteConfig.skills.map((group) => (
                 <RevealItem key={group.category}>
-                  <h4 className="text-sm font-medium text-[var(--color-text-secondary)]">
+                  <h4 className="text-base font-medium text-[var(--color-text-secondary)]">
                     {group.category}
                   </h4>
                   <ul className="mt-2 flex flex-wrap gap-2">
                     {group.items.map((item) => (
                       <li
                         key={item}
-                        className="rounded-full border border-[var(--color-border)] bg-white/[0.03] px-3 py-1 font-mono text-xs text-[var(--color-text-primary)]"
+                        className="rounded-full border border-[var(--color-border)] bg-white/[0.03] px-3 py-1 font-mono text-sm text-[var(--color-text-primary)]"
                       >
                         {item}
                       </li>
@@ -141,12 +141,12 @@ export function AboutSection() {
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
               IoT & Robotics
             </h3>
-            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+            <p className="mt-3 text-base leading-relaxed text-[var(--color-text-secondary)]">
               Passionate about building intelligent hardware systems and exploring
               robotics applications. Completed hands-on training at India&apos;s
               premier research institutions.
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-[var(--color-text-secondary)]">
+            <ul className="mt-4 space-y-2 text-base text-[var(--color-text-secondary)]">
               <li className="flex items-start gap-2">
                 <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
                 <span>IoT Robotics ROS Workshop at IISc (Indian Institute of Science)</span>
@@ -160,7 +160,7 @@ export function AboutSection() {
               {roboticsTools.map((tech) => (
                 <li
                   key={tech}
-                  className="rounded-full border border-[var(--color-border)] bg-white/[0.03] px-3 py-1 font-mono text-xs text-[var(--color-text-primary)]"
+                  className="rounded-full border border-[var(--color-border)] bg-white/[0.03] px-3 py-1 font-mono text-sm text-[var(--color-text-primary)]"
                 >
                   {tech}
                 </li>

@@ -11,7 +11,7 @@ interface ButtonProps extends Omit<HTMLMotionProps<"a">, "children"> {
 }
 
 const base =
-  "inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
+  "inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
 
 const variants: Record<Variant, string> = {
   primary:

@@ -26,23 +26,23 @@ export function PinnedRepoCard({ repo }: { repo: GitHubRepo }) {
         className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-[var(--color-accent)]/25 to-[var(--color-accent-2)]/20 blur-2xl transition-opacity duration-300 group-hover:opacity-100 opacity-60"
       />
       <div className="relative flex items-center justify-between gap-2">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent-hover)]">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent-hover)]">
           Pinned
         </span>
-        <span className="flex items-center gap-1 text-xs text-[var(--color-highlight)]">
+        <span className="flex items-center gap-1 text-sm text-[var(--color-highlight)]">
           ★ {repo.stars}
         </span>
       </div>
 
-      <h3 className="relative truncate font-mono text-base font-semibold text-[var(--color-text-primary)]">
+      <h3 className="relative truncate font-mono text-lg font-semibold text-[var(--color-text-primary)]">
         {repo.name}
       </h3>
 
-      <p className="relative line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+      <p className="relative line-clamp-3 flex-1 text-base leading-relaxed text-[var(--color-text-secondary)]">
         {repo.description ?? "No description provided."}
       </p>
 
-      <div className="relative flex items-center justify-between pt-2 text-xs text-[var(--color-text-secondary)]">
+      <div className="relative flex items-center justify-between pt-2 text-sm text-[var(--color-text-secondary)]">
         <span className="flex items-center gap-1.5">
           {repo.language && (
             <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]" />
