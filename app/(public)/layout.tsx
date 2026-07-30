@@ -37,11 +37,11 @@ export default function PublicLayout({
         </div>
       </header>
 
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="relative flex-1">
         {children}
       </main>
 
-      <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+      <footer className="relative z-10 border-t border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-8 text-sm text-[var(--color-text-secondary)] sm:flex-row sm:justify-between sm:px-6">
           <p>
             © {new Date().getFullYear()} {siteConfig.name}

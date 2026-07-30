@@ -44,7 +44,7 @@ export default function HomePage() {
           </Link>
           <a
             href={siteConfig.resumeUrl}
-            className="inline-flex h-11 items-center justify-center rounded-md px-5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+            className="inline-flex h-11 items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
           >
             Download Resume
           </a>
@@ -63,7 +63,7 @@ export default function HomePage() {
         </ul>
       </div>
 
-      <div className="relative h-40 w-40 shrink-0 sm:h-48 sm:w-48">
+      <div className="relative h-40 w-40 shrink-0 sm:h-48 sm:w-48 ring-1 ring-gray-200 shadow-md rounded-full dark:ring-gray-800">
         <Image
           src={siteConfig.profileImageUrl}
           alt={siteConfig.name}
