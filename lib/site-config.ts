@@ -12,7 +12,7 @@ export const siteConfig = {
   tagline:
     "I learn by building. Passionate about solving real-world problems with AI — from healthcare automation to intelligent systems.",
   email: "buildathon111@gmail.com",
-  linkedinUrl: "https://linkedin.com/in/shreyasrs", // TODO: Update with actual LinkedIn
+  linkedinUrl: "https://www.linkedin.com/in/shreyas-r-s-394347386",
   githubUrl: `https://github.com/${githubUsername}`,
   githubUsername,
   youtubeUrl: "https://youtube.com/@srbuilds", // TODO: Update with actual YouTube channel
