@@ -4,23 +4,23 @@ import type { ProjectDTO } from "@/lib/projects";
 
 export function ProjectCard({ project }: { project: ProjectDTO }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[var(--color-accent)] focus-within:border-[var(--color-accent)]">
-      <div className="relative aspect-video w-full overflow-hidden bg-[var(--color-background)]">
+    <article className="glass-panel group flex flex-col overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--color-accent)] hover:shadow-[0_20px_60px_-15px_var(--glow-blue)] focus-within:border-[var(--color-accent)]">
+      <div className="relative aspect-video w-full overflow-hidden bg-[var(--color-surface-2)]">
         <Image
           src={project.coverImageUrl}
           alt={`Screenshot of ${project.title}`}
           fill
           sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-medium text-[var(--color-text-primary)]">
             <Link
               href={`/projects/${project.slug}`}
-              className="hover:text-[var(--color-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+              className="hover:text-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
             >
               {project.title}
             </Link>
@@ -40,7 +40,7 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
           {project.techStack.map((tech) => (
             <li
               key={tech}
-              className="rounded-md border border-[var(--color-border)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-secondary)]"
+              className="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-xs text-[var(--color-text-secondary)]"
             >
               {tech}
             </li>
@@ -53,7 +53,7 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+              className="text-[var(--color-accent-hover)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
             >
               GitHub
             </a>
@@ -63,7 +63,7 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+              className="text-[var(--color-accent-hover)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
             >
               Live demo
             </a>

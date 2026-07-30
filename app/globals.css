@@ -1,38 +1,122 @@
 @import "tailwindcss";
 
 /*
- * Design tokens from Design.md Section 15.2 (Visual Design System).
- * Default theme is light; dark mode is a later enhancement, not wired here.
+ * Premium dark theme: navy/blue-dominant palette with purple secondary
+ * and orange reserved strictly for highlight accents (badges, glows).
  */
 :root {
-  --color-background: #f8fafc;
-  --color-surface: #ffffff;
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #475569;
-  --color-border: #e2e8f0;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-success: #0f766e;
-  --color-error: #b91c1c;
+  --color-background: #05070f;
+  --color-surface: #0b1020;
+  --color-surface-2: #10162b;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: rgba(148, 163, 184, 0.14);
+  --color-border-strong: rgba(148, 163, 184, 0.28);
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-2: #7c3aed;
+  --color-highlight: #f97316;
+  --color-success: #2dd4bf;
+  --color-error: #f87171;
+
+  --glow-blue: rgba(59, 130, 246, 0.35);
+  --glow-purple: rgba(124, 58, 237, 0.3);
+  --glow-orange: rgba(249, 115, 22, 0.25);
 }
 
 @theme inline {
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
+  --color-accent-2: var(--color-accent-2);
+  --color-highlight: var(--color-highlight);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
+  position: relative;
+}
+
+/* Layered ambient background: mesh gradients + soft glows + subtle noise. */
+.ambient-background {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--color-background);
+}
+
+.ambient-background::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(45% 35% at 15% 10%, var(--glow-blue) 0%, transparent 60%),
+    radial-gradient(40% 40% at 85% 20%, var(--glow-purple) 0%, transparent 60%),
+    radial-gradient(35% 35% at 75% 85%, var(--glow-orange) 0%, transparent 65%),
+    radial-gradient(50% 50% at 10% 90%, var(--glow-blue) 0%, transparent 60%);
+  filter: blur(60px);
+}
+
+.ambient-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(16, 22, 43, 0.7), rgba(11, 16, 32, 0.55));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+}
+
+.glass-nav {
+  background: rgba(5, 7, 15, 0.55);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #f1f5f9 10%, #93c5fd 45%, #c4b5fd 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
 }
 
 @media (prefers-reduced-motion: reduce) {

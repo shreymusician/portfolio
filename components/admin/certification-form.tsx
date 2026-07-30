@@ -15,9 +15,7 @@ interface CertificationFormProps {
 export function CertificationForm({ certification }: CertificationFormProps) {
   const isEdit = !!certification;
   const action = isEdit
-    ? (formData: FormData) => updateCertificationAction(certification.id, {
-        success: false,
-      }, formData)
+    ? updateCertificationAction.bind(null, certification.id)
     : createCertificationAction;
 
   const [state, formAction, isPending] = useActionState<CertificationFormState, FormData>(
