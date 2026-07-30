@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,29 @@ const proofPoints = [
   "Ships and documents projects end-to-end",
   "Builds in public on SR Builds (YouTube)",
 ];
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+/** Orchestrates the hero's entrance: heading first, then paragraph, then
+ * buttons, then the proof list -- each child a touch further down the
+ * reveal, never all at once. */
+const heroContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.14, delayChildren: 0.1 },
+  },
+};
+
+const heroItem: Variants = {
+  hidden: { opacity: 0, y: 28, scale: 0.98, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 0.9, ease: EASE_OUT },
+  },
+};
 
 export function HeroSection() {
   return (
@@ -42,32 +65,47 @@ export function HeroSection() {
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-col-reverse items-center gap-14 md:flex-row md:gap-16">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial="hidden"
+          animate="visible"
+          variants={heroContainer}
           className="flex flex-col items-center text-center md:items-start md:text-left"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-4 py-1.5 text-sm font-medium text-[var(--color-accent-hover)]">
+          <motion.span
+            variants={heroItem}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-4 py-1.5 text-sm font-medium text-[var(--color-accent-hover)]"
+          >
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-success)] opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-success)]" />
             </span>
             {siteConfig.title}
-          </span>
+          </motion.span>
 
-          <p className="eyebrow-gradient mt-5 max-w-xl text-sm font-semibold uppercase leading-relaxed tracking-[0.1em] sm:text-base">
+          <motion.p
+            variants={heroItem}
+            className="eyebrow-gradient mt-5 max-w-xl text-sm font-semibold uppercase leading-relaxed tracking-[0.1em] sm:text-base"
+          >
             {identityLine}
-          </p>
+          </motion.p>
 
-          <h1 className="mt-4 text-[clamp(2.75rem,7.5vw,5rem)] font-bold leading-[1.05] tracking-tight">
+          <motion.h1
+            variants={heroItem}
+            className="mt-4 text-[clamp(2.75rem,7.5vw,5rem)] font-bold leading-[1.05] tracking-tight"
+          >
             <span className="text-gradient">{siteConfig.name}</span>
-          </h1>
+          </motion.h1>
 
-          <p className="mt-6 max-w-lg text-[clamp(1.05rem,1.25vw,1.2rem)] leading-[1.7] text-[var(--color-text-secondary)]">
+          <motion.p
+            variants={heroItem}
+            className="mt-6 max-w-lg text-[clamp(1.05rem,1.25vw,1.2rem)] leading-[1.7] text-[var(--color-text-secondary)]"
+          >
             {siteConfig.tagline}
-          </p>
+          </motion.p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 md:justify-start">
+          <motion.div
+            variants={heroItem}
+            className="mt-10 flex flex-wrap items-center justify-center gap-4 md:justify-start"
+          >
             <Button href="#projects" variant="primary">
               View Projects
             </Button>
@@ -77,31 +115,28 @@ export function HeroSection() {
             <Button href={siteConfig.resumeUrl} variant="secondary">
               Download Resume
             </Button>
-          </div>
+          </motion.div>
 
-          <ul className="mt-12 flex flex-col gap-3 text-base text-[var(--color-text-secondary)]">
-            {proofPoints.map((point, i) => (
-              <motion.li
-                key={point}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                className="flex items-center gap-3"
-              >
+          <motion.ul
+            variants={heroItem}
+            className="mt-12 flex flex-col gap-3 text-base text-[var(--color-text-secondary)]"
+          >
+            {proofPoints.map((point) => (
+              <li key={point} className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
                   className="h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
                 />
                 {point}
-              </motion.li>
+              </li>
             ))}
-          </ul>
+          </motion.ul>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, scale: 0.92, filter: "blur(10px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.1, delay: 0.35, ease: EASE_OUT }}
           className="relative shrink-0"
         >
           {/* Blurred colored circles behind the image */}
@@ -141,7 +176,7 @@ export function HeroSection() {
           aria-hidden="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+          transition={{ delay: 1.4, duration: 0.8, ease: EASE_OUT }}
           className="text-[var(--color-text-secondary)]"
         >
           <motion.div

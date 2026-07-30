@@ -22,10 +22,10 @@ export function StatsGrid({ stats }: { stats: GithubStat[] }) {
       {stats.map((stat, i) => (
         <motion.div
           key={stat.label}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: i * 0.06 }}
+          initial={{ opacity: 0, y: 28, scale: 0.97, filter: "blur(8px)" }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
           whileHover={{ y: -4 }}
           className="glass-panel rounded-2xl p-5 text-center transition-shadow duration-300 hover:shadow-[0_16px_40px_-12px_var(--stat-glow)]"
           style={{ "--stat-glow": accentGlow[stat.accent ?? "blue"] } as React.CSSProperties}

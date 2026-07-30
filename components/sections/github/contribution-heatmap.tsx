@@ -74,10 +74,10 @@ export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
                 return (
                   <motion.div
                     key={day.date}
-                    initial={{ opacity: 0, scale: 0.4 }}
+                    initial={{ opacity: 0, scale: 0.5 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.3, delay: wi * 0.004 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: wi * 0.006, ease: [0.22, 1, 0.36, 1] }}
                     onMouseEnter={() => setHovered(day)}
                     onMouseLeave={() => setHovered(null)}
                     className="h-[13px] w-[13px] cursor-pointer rounded-[3px] transition-transform hover:scale-125"
