@@ -22,9 +22,14 @@ export default async function ProjectsPage() {
 
       <div className="mt-10">
         {projects.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-[var(--color-border)] p-10 text-center text-sm text-[var(--color-text-secondary)]">
-            No published projects yet. Check back soon.
-          </p>
+          <div className="rounded-xl border border-dashed border-[var(--color-border)] p-10 text-center">
+            <p className="text-sm font-medium text-[var(--color-text-primary)]">
+              Coming Soon
+            </p>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              I'm working on some exciting projects. Check back soon to see what I've built.
+            </p>
+          </div>
         ) : (
           <ProjectsBrowser projects={projects} />
         )}

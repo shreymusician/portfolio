@@ -20,8 +20,8 @@ export const siteConfig = {
 
   bio: [
     "I'm a 3rd-year AI/ML Engineering student at Adichunchanagiri Institute of Technology, Karnataka. I believe in learning by building — whenever I pick up a technology, I create something practical with it.",
-    "I'm passionate about leveraging AI to solve real-world problems, particularly in healthcare, data science, and full-stack development. Beyond engineering, I've spent 8 years learning Indian Classical and Western Music, which has shaped my creativity, discipline, and problem-solving approach.",
-    "My personality is a blend of Engineer + Artist + Builder + Lifelong Learner. This portfolio showcases projects I've built, hackathons I've won, and my journey in AI/ML.",
+    "I'm passionate about leveraging AI to solve real-world problems, particularly in healthcare, data science, and full-stack development. Beyond engineering, I've spent 8 years learning Indian Classical and Western Music (Keyboard, Flute, Pakhwaj, Ghatam), which has shaped my creativity, discipline, and problem-solving approach.",
+    "My personality is a blend of Engineer + Artist + Builder + Lifelong Learner. I believe projects teach more than tutorials, and consistency and curiosity matter more than talent.",
   ],
 
   education: {
