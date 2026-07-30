@@ -11,7 +11,7 @@ export function SectionHeading({
 }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] bg-white/[0.03] px-3.5 py-1.5 text-sm font-semibold uppercase tracking-[0.12em]">
         <span className="h-1 w-1 rounded-full bg-[var(--color-highlight)]" />
         <span className="eyebrow-gradient">{eyebrow}</span>
       </span>

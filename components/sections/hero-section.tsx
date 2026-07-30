@@ -55,7 +55,7 @@ export function HeroSection() {
             {siteConfig.title}
           </span>
 
-          <p className="eyebrow-gradient mt-5 max-w-xl text-xs font-semibold uppercase tracking-[0.14em] sm:text-sm">
+          <p className="eyebrow-gradient mt-5 max-w-xl text-sm font-semibold uppercase leading-relaxed tracking-[0.1em] sm:text-base">
             {identityLine}
           </p>
 
@@ -79,7 +79,7 @@ export function HeroSection() {
             </Button>
           </div>
 
-          <ul className="mt-12 flex flex-col gap-3 text-sm text-[var(--color-text-secondary)]">
+          <ul className="mt-12 flex flex-col gap-3 text-base text-[var(--color-text-secondary)]">
             {proofPoints.map((point, i) => (
               <motion.li
                 key={point}

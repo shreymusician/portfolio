@@ -50,7 +50,7 @@ export function AboutSection() {
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
               Let&apos;s Connect
             </h3>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+            <p className="mt-2 text-base text-[var(--color-text-secondary)]">
               Feel free to reach out on any platform below.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
