@@ -1,27 +1,36 @@
 @import "tailwindcss";
 
 /*
- * Premium dark theme: navy/blue-dominant palette with purple secondary
- * and orange reserved strictly for highlight accents (badges, glows).
+ * Premium dark theme: navy/royal-blue identity, purple + sky-blue as
+ * secondary accents, soft orange reserved strictly for small highlights
+ * (badges, active indicators, gradient accents) -- never a dominant color.
  */
 :root {
   --color-background: #05070f;
   --color-surface: #0b1020;
   --color-surface-2: #10162b;
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #99a3c2;
   --color-border: rgba(148, 163, 184, 0.14);
   --color-border-strong: rgba(148, 163, 184, 0.28);
+
+  /* Brand identity */
+  --color-navy: #070b18;
+  --color-royal: #2952e3;
   --color-accent: #3b82f6;
   --color-accent-hover: #60a5fa;
-  --color-accent-2: #7c3aed;
-  --color-highlight: #f97316;
+  --color-sky: #38bdf8;
+  --color-accent-2: #8b5cf6;
+  --color-lavender: #c4b5fd;
+  --color-highlight: #fb923c;
   --color-success: #2dd4bf;
   --color-error: #f87171;
 
-  --glow-blue: rgba(59, 130, 246, 0.35);
-  --glow-purple: rgba(124, 58, 237, 0.3);
-  --glow-orange: rgba(249, 115, 22, 0.25);
+  --glow-blue: rgba(59, 130, 246, 0.38);
+  --glow-royal: rgba(41, 82, 227, 0.35);
+  --glow-purple: rgba(139, 92, 246, 0.32);
+  --glow-sky: rgba(56, 189, 248, 0.3);
+  --glow-orange: rgba(251, 146, 60, 0.28);
 }
 
 @theme inline {
@@ -32,9 +41,13 @@
   --color-text-secondary: var(--color-text-secondary);
   --color-border: var(--color-border);
   --color-border-strong: var(--color-border-strong);
+  --color-navy: var(--color-navy);
+  --color-royal: var(--color-royal);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
+  --color-sky: var(--color-sky);
   --color-accent-2: var(--color-accent-2);
+  --color-lavender: var(--color-lavender);
   --color-highlight: var(--color-highlight);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
@@ -67,11 +80,13 @@ body {
   position: absolute;
   inset: -20%;
   background:
-    radial-gradient(45% 35% at 15% 10%, var(--glow-blue) 0%, transparent 60%),
-    radial-gradient(40% 40% at 85% 20%, var(--glow-purple) 0%, transparent 60%),
-    radial-gradient(35% 35% at 75% 85%, var(--glow-orange) 0%, transparent 65%),
-    radial-gradient(50% 50% at 10% 90%, var(--glow-blue) 0%, transparent 60%);
-  filter: blur(60px);
+    radial-gradient(42% 34% at 12% 8%, var(--glow-royal) 0%, transparent 62%),
+    radial-gradient(38% 38% at 88% 14%, var(--glow-purple) 0%, transparent 62%),
+    radial-gradient(30% 32% at 78% 82%, var(--glow-orange) 0%, transparent 68%),
+    radial-gradient(46% 46% at 6% 92%, var(--glow-sky) 0%, transparent 62%),
+    radial-gradient(38% 38% at 50% 45%, var(--glow-blue) 0%, transparent 70%);
+  filter: blur(64px);
+  animation: driftGlow 26s ease-in-out infinite alternate;
 }
 
 .ambient-background::after {
@@ -83,24 +98,139 @@ body {
   mix-blend-mode: overlay;
 }
 
+@keyframes driftGlow {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-2%, 2%, 0) scale(1);
+  }
+}
+
 .glass-panel {
-  background: linear-gradient(180deg, rgba(16, 22, 43, 0.7), rgba(11, 16, 32, 0.55));
+  background: linear-gradient(180deg, rgba(20, 27, 51, 0.72), rgba(11, 16, 32, 0.58));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--color-border);
 }
 
 .glass-nav {
-  background: rgba(5, 7, 15, 0.55);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: rgba(5, 7, 15, 0.6);
+  backdrop-filter: blur(18px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
 }
 
 .text-gradient {
-  background: linear-gradient(120deg, #f1f5f9 10%, #93c5fd 45%, #c4b5fd 75%);
+  background: linear-gradient(120deg, #f8fafc 6%, #93c5fd 34%, #8b5cf6 62%, #38bdf8 88%);
+  background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.eyebrow-gradient {
+  background: linear-gradient(90deg, var(--color-sky), var(--color-accent-2) 55%, var(--color-highlight));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gradient section divider: a thin fading line with a glowing center dot. */
+.section-divider {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  max-width: 18rem;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--color-border-strong) 30%, var(--color-border-strong) 70%, transparent);
+}
+
+.section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: var(--color-accent-2);
+  box-shadow: 0 0 16px 4px var(--glow-purple);
+}
+
+/* Premium button shine sweep, layered under content via ::before. */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.28) 40%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+
+.btn-shine:hover::before {
+  transform: translateX(120%);
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseRing {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.animate-float {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 18s linear infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 4s ease-in-out infinite;
 }
 
 ::selection {
