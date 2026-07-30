@@ -7,7 +7,11 @@ export async function ProjectsSection() {
   const projects = await getPublishedProjects();
 
   return (
-    <section id="projects" className="relative px-4 py-28 sm:px-6">
+    <section id="projects" className="relative overflow-hidden px-4 py-28 sm:px-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] bg-[radial-gradient(55%_50%_at_80%_0%,var(--glow-blue),transparent_70%)]"
+      />
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Work"

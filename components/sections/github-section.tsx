@@ -28,7 +28,11 @@ export async function GitHubSection() {
   const topRepos = repos.filter((r) => !r.isFork).slice(0, 9);
 
   return (
-    <section id="github" className="relative px-4 py-28 sm:px-6">
+    <section id="github" className="relative overflow-hidden px-4 py-28 sm:px-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] bg-[radial-gradient(55%_50%_at_80%_0%,var(--glow-sky),transparent_70%)]"
+      />
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Live"

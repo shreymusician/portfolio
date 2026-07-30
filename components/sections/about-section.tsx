@@ -20,7 +20,11 @@ const roboticsTools = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="relative px-4 py-28 sm:px-6">
+    <section id="about" className="relative overflow-hidden px-4 py-28 sm:px-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] bg-[radial-gradient(60%_50%_at_20%_0%,var(--glow-purple),transparent_70%)]"
+      />
       <div className="mx-auto max-w-5xl">
         <SectionHeading
           eyebrow="About"
