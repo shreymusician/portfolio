@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { siteConfig } from "@/lib/site-config";
+import { Logo } from "@/components/ui/logo";
 
 const sections = [
   { id: "home", label: "Home" },
@@ -12,13 +12,6 @@ const sections = [
   { id: "github", label: "GitHub" },
   { id: "contact", label: "Contact" },
 ];
-
-const initials = siteConfig.name
-  .split(" ")
-  .map((part) => part[0])
-  .join("")
-  .slice(0, 2)
-  .toUpperCase();
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,17 +58,8 @@ export function SiteNav() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <a
-          href="#home"
-          onClick={(e) => handleClick(e, "home")}
-          className="group flex items-center gap-2.5"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-sky)] text-xs font-bold text-white shadow-[0_0_18px_var(--glow-purple)] transition-transform group-hover:scale-105">
-            {initials}
-          </span>
-          <span className="text-sm font-semibold tracking-tight text-[var(--color-text-primary)]">
-            {siteConfig.name}
-          </span>
+        <a href="#home" onClick={(e) => handleClick(e, "home")} className="shrink-0">
+          <Logo className="text-base sm:text-lg" />
         </a>
 
         <nav
