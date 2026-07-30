@@ -106,6 +106,47 @@ export default function AboutPage() {
 
       <section className="mt-12">
         <h2 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-[var(--color-text-primary)]">
+          IoT & Robotics
+        </h2>
+        <p className="mt-3 text-[var(--color-text-secondary)]">
+          Passionate about building intelligent hardware systems and exploring robotics applications. Completed hands-on training at India's premier research institutions.
+        </p>
+        <div className="mt-4 flex flex-col gap-4">
+          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <h3 className="font-medium text-[var(--color-text-primary)]">
+              Experience
+            </h3>
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-text-secondary)]">
+              <li className="flex items-start gap-2">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                <span>IoT Robotics ROS Workshop at IISc (Indian Institute of Science)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                <span>Hands-on robotics learning and embedded systems development</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-sm font-medium text-[var(--color-text-secondary)]">
+              Tools & Technologies
+            </h3>
+            <ul className="mt-2 flex flex-wrap gap-2">
+              {["ROS", "Arduino", "Embedded Systems", "Sensor Integration", "IoT Platforms", "Hardware Design"].map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 font-mono text-xs text-[var(--color-text-primary)]"
+                >
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-[var(--color-text-primary)]">
           Highlights
         </h2>
         <ol className="mt-4 flex flex-col gap-4 border-l border-[var(--color-border)] pl-5">
