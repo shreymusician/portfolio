@@ -3,13 +3,23 @@
 import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
+/**
+ * Shared motion language for every scroll reveal in the portfolio. Tuned to
+ * read as cinematic rather than energetic: slow deceleration curve, no
+ * overshoot, combined opacity + lift + blur-in + gentle scale so nothing
+ * "pops" into place. Keep every section's reveals on this one system rather
+ * than inventing per-section timings.
+ */
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
 const variants: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 32, scale: 0.97, filter: "blur(10px)" },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.9, ease: EASE_OUT },
   },
 };
 
@@ -27,7 +37,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-100px" }}
       variants={variants}
       transition={{ delay }}
     >
@@ -39,7 +49,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
 const staggerContainer: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
   },
 };
 
@@ -55,7 +65,7 @@ export function RevealGroup({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-100px" }}
       variants={staggerContainer}
     >
       {children}
