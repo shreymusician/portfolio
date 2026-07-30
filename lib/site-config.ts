@@ -15,7 +15,7 @@ export const siteConfig = {
   linkedinUrl: "https://www.linkedin.com/in/shreyas-r-s-394347386",
   githubUrl: `https://github.com/${githubUsername}`,
   githubUsername,
-  youtubeUrl: "https://youtube.com/@srbuilds", // TODO: Update with actual YouTube channel
+  youtubeUrl: "https://www.youtube.com/@shreyasrangadhol",
   resumeUrl: "/resume.pdf",
 
   bio: [
