@@ -86,3 +86,27 @@ export function projectFormDataToInput(formData: FormData) {
     order: String(formData.get("order") ?? "0"),
   };
 }
+
+export const CertificationInputSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(150, "Title must be 150 characters or fewer"),
+  issuer: z.string().trim().min(1, "Issuer is required").max(100, "Issuer must be 100 characters or fewer"),
+  issueDate: z.string().trim().min(1, "Issue date is required"),
+  imageUrl: z.url("Image must be a valid URL"),
+  verifyUrl: optionalUrl,
+  category: z.enum(["certification", "workshop", "hackathon", "achievement"]).default("certification"),
+  order: z.coerce.number().int().min(0).max(10000).default(0),
+});
+
+export type CertificationInput = z.infer<typeof CertificationInputSchema>;
+
+export function certificationFormDataToInput(formData: FormData) {
+  return {
+    title: String(formData.get("title") ?? ""),
+    issuer: String(formData.get("issuer") ?? ""),
+    issueDate: String(formData.get("issueDate") ?? ""),
+    imageUrl: String(formData.get("imageUrl") ?? ""),
+    verifyUrl: String(formData.get("verifyUrl") ?? ""),
+    category: String(formData.get("category") ?? "certification"),
+    order: String(formData.get("order") ?? "0"),
+  };
+}

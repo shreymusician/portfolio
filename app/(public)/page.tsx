@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
@@ -62,11 +63,14 @@ export default function HomePage() {
         </ul>
       </div>
 
-      <div
-        aria-hidden="true"
-        className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)]/10 text-4xl font-semibold text-[var(--color-accent)] sm:h-48 sm:w-48"
-      >
-        {initials}
+      <div className="relative h-40 w-40 shrink-0 sm:h-48 sm:w-48">
+        <Image
+          src={siteConfig.profileImageUrl}
+          alt={siteConfig.name}
+          fill
+          className="rounded-full object-cover"
+          priority
+        />
       </div>
     </section>
   );

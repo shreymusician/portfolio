@@ -8,6 +8,7 @@ const githubUsername = process.env.GITHUB_USERNAME || "your-github-username";
 
 export const siteConfig = {
   name: "Shreyas R S",
+  profileImageUrl: "/media/profile_pic.png",
   title: "AI/ML Engineer & Builder",
   tagline:
     "I learn by building. Passionate about solving real-world problems with AI — from healthcare automation to intelligent systems.",
