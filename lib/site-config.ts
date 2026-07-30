@@ -28,7 +28,7 @@ export const siteConfig = {
   education: {
     school: "Adichunchanagiri Institute of Technology, Karnataka",
     degree: "B.Tech in Artificial Intelligence and Machine Learning",
-    period: "2023 -- 2027 (expected)",
+    period: "2024 -- 2028 (expected)",
   },
 
   skills: [
