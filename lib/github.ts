@@ -12,14 +12,6 @@ export type GitHubRepo = {
   isFork: boolean;
 };
 
-export type GitHubActivityItem = {
-  id: string;
-  type: string;
-  repoName: string;
-  createdAt: string;
-  label: string;
-};
-
 function githubHeaders(): HeadersInit {
   const headers: HeadersInit = {
     Accept: "application/vnd.github+json",
@@ -88,66 +80,6 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
       .sort((a, b) => b.stars - a.stars);
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
-    return [];
-  }
-}
-
-const EVENT_LABELS: Record<string, (repo: string) => string> = {
-  PushEvent: (repo) => `Pushed to ${repo}`,
-  CreateEvent: (repo) => `Created ${repo}`,
-  PullRequestEvent: (repo) => `Opened a pull request on ${repo}`,
-  IssuesEvent: (repo) => `Opened an issue on ${repo}`,
-  IssueCommentEvent: (repo) => `Commented on ${repo}`,
-  WatchEvent: (repo) => `Starred ${repo}`,
-  ForkEvent: (repo) => `Forked ${repo}`,
-  ReleaseEvent: (repo) => `Published a release on ${repo}`,
-};
-
-/**
- * Fetches recent PUBLIC events for GITHUB_USERNAME. This is intentionally
- * described as "recent public activity", not "recent commits" -- the events
- * API mixes several event types and only covers a recent public window, not
- * a full commit history. Degrades to an empty array on any failure.
- */
-export async function getGitHubActivity(): Promise<GitHubActivityItem[]> {
-  const username = process.env.GITHUB_USERNAME;
-  if (!username) return [];
-
-  try {
-    const response = await fetch(
-      `${GITHUB_API_BASE}/users/${encodeURIComponent(username)}/events/public?per_page=10`,
-      {
-        headers: githubHeaders(),
-        next: { revalidate: REVALIDATE_SECONDS },
-      }
-    );
-
-    if (!response.ok) {
-      console.error(
-        `GitHub activity request failed: ${response.status} ${response.statusText}`
-      );
-      return [];
-    }
-
-    const data = (await response.json()) as Array<{
-      id: string;
-      type: string;
-      created_at: string;
-      repo: { name: string };
-    }>;
-
-    return data.map((event) => {
-      const labelFn = EVENT_LABELS[event.type];
-      return {
-        id: event.id,
-        type: event.type,
-        repoName: event.repo.name,
-        createdAt: event.created_at,
-        label: labelFn ? labelFn(event.repo.name) : `${event.type} on ${event.repo.name}`,
-      };
-    });
-  } catch (error) {
-    console.error("Failed to fetch GitHub activity:", error);
     return [];
   }
 }

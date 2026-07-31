@@ -1,5 +1,4 @@
 import {
-  getGitHubActivity,
   getGitHubProfile,
   getContributionCalendar,
   getGitHubRepos,
@@ -34,9 +33,8 @@ function formatRelativeDate(iso: string): string {
 }
 
 export async function GitHubSection() {
-  const [repos, activity, profile, calendar] = await Promise.all([
+  const [repos, profile, calendar] = await Promise.all([
     getGitHubRepos(),
-    getGitHubActivity(),
     getGitHubProfile(),
     getContributionCalendar(),
   ]);
@@ -220,38 +218,6 @@ export async function GitHubSection() {
                 </RevealGroup>
               </div>
             )}
-
-            <div className="mt-16">
-              <Reveal>
-                <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
-                  Recent public GitHub activity
-                </h3>
-                <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-                  A window into recent public events — not a complete commit
-                  history.
-                </p>
-              </Reveal>
-              {activity.length === 0 ? (
-                <p className="mt-4 text-base text-[var(--color-text-secondary)]">
-                  No recent public activity to show.
-                </p>
-              ) : (
-                <RevealGroup className="mt-4 flex flex-col gap-2">
-                  {activity.map((item) => (
-                    <RevealItem key={item.id}>
-                      <div className="glass-panel flex items-center justify-between gap-3 rounded-xl px-5 py-3 text-base">
-                        <span className="truncate text-[var(--color-text-primary)]">
-                          {item.label}
-                        </span>
-                        <span className="shrink-0 font-mono text-sm text-[var(--color-text-secondary)]">
-                          {formatRelativeDate(item.createdAt)}
-                        </span>
-                      </div>
-                    </RevealItem>
-                  ))}
-                </RevealGroup>
-              )}
-            </div>
           </>
         )}
       </div>

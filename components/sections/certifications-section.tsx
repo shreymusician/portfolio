@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { getAllCertifications } from "@/lib/certifications";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { CertificationCard } from "@/components/sections/certification-card";
 
 const categoryLabels: Record<string, string> = {
   certification: "Certifications",
@@ -52,38 +52,7 @@ export async function CertificationsSection() {
                 <RevealGroup className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {certs.map((cert) => (
                     <RevealItem key={cert.id}>
-                      <div className="glass-panel group h-full overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--color-accent)] hover:shadow-[0_20px_60px_-15px_var(--glow-blue)]">
-                        <div className="relative h-44 w-full bg-[var(--color-surface-2)]">
-                          <Image
-                            src={cert.imageUrl}
-                            alt={cert.title}
-                            fill
-                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        </div>
-                        <div className="p-5">
-                          <p className="text-sm font-medium text-[var(--color-accent-hover)]">
-                            {cert.issueDate}
-                          </p>
-                          <h4 className="mt-2 text-lg font-semibold text-[var(--color-text-primary)]">
-                            {cert.title}
-                          </h4>
-                          <p className="mt-1 text-base text-[var(--color-text-secondary)]">
-                            {cert.issuer}
-                          </p>
-                          {cert.verifyUrl && (
-                            <a
-                              href={cert.verifyUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-4 inline-flex text-sm font-medium text-[var(--color-accent-hover)] hover:underline"
-                            >
-                              Verify Certificate →
-                            </a>
-                          )}
-                        </div>
-                      </div>
+                      <CertificationCard cert={cert} />
                     </RevealItem>
                   ))}
                 </RevealGroup>
