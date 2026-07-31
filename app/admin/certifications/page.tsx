@@ -7,13 +7,13 @@ export default async function AdminCertificationsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold text-[var(--color-text-primary)]">
           Certifications & Achievements
         </h1>
         <Link
           href="/admin/certifications/new"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--color-accent)] px-4 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)]"
+          className="inline-flex h-10 w-fit items-center justify-center rounded-md bg-[var(--color-accent)] px-4 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)]"
         >
           Add Certification
         </Link>

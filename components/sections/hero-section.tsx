@@ -162,6 +162,7 @@ export function HeroSection() {
                   src={siteConfig.profileImageUrl}
                   alt={siteConfig.name}
                   fill
+                  sizes="(min-width: 768px) 256px, (min-width: 640px) 224px, 192px"
                   className="rounded-full object-cover"
                   priority
                 />
