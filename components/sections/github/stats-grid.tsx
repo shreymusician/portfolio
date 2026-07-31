@@ -7,6 +7,8 @@ export type GithubStat = {
   label: string;
   value: number;
   accent?: "blue" | "purple" | "sky" | "orange";
+  /** Render the value as-is instead of animating a count-up -- for non-cumulative numbers like a year. */
+  raw?: boolean;
 };
 
 const accentGlow: Record<NonNullable<GithubStat["accent"]>, string> = {
@@ -31,7 +33,7 @@ export function StatsGrid({ stats }: { stats: GithubStat[] }) {
           style={{ "--stat-glow": accentGlow[stat.accent ?? "blue"] } as React.CSSProperties}
         >
           <p className="text-2xl font-bold text-[var(--color-text-primary)] sm:text-3xl">
-            <CountUp value={stat.value} />
+            {stat.raw ? stat.value : <CountUp value={stat.value} />}
           </p>
           <p className="mt-1.5 text-sm font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
             {stat.label}

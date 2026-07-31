@@ -10,7 +10,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { StatsGrid, type GithubStat } from "@/components/sections/github/stats-grid";
-import { ContributionHeatmap } from "@/components/sections/github/contribution-heatmap";
+import { ContributionHeatmapCard } from "@/components/sections/github/contribution-heatmap-card";
 import { PinnedRepoCard } from "@/components/sections/github/pinned-repo-card";
 
 const PINNED_REPO_NAMES = [
@@ -62,18 +62,26 @@ export async function GitHubSection() {
 
   const stats: GithubStat[] = [];
   if (profile) {
-    stats.push(
-      { label: "Public Repos", value: profile.publicRepos, accent: "blue" },
-      { label: "Followers", value: profile.followers, accent: "purple" },
-      { label: "Following", value: profile.following, accent: "sky" }
-    );
+    stats.push({ label: "Public Repos", value: profile.publicRepos, accent: "blue" });
   }
   if (calendar) {
     stats.push(
-      { label: "Contributions (1y)", value: calendar.totalContributions, accent: "orange" },
+      {
+        label: "Contributions (This Year)",
+        value: calendar.years[0]?.totalContributions ?? 0,
+        accent: "orange",
+      },
       { label: "Current Streak", value: calendar.currentStreak, accent: "purple" },
-      { label: "Longest Streak", value: calendar.longestStreak, accent: "blue" }
+      { label: "Longest Streak", value: calendar.longestStreak, accent: "sky" }
     );
+  }
+  if (profile) {
+    stats.push({
+      label: "Active Since",
+      value: profile.joinedYear,
+      accent: "blue",
+      raw: true,
+    });
   }
 
   return (
@@ -122,19 +130,9 @@ export async function GitHubSection() {
               </div>
             )}
 
-            {calendar && (
+            {calendar && calendar.years.length > 0 && (
               <Reveal delay={0.1} className="mt-10">
-                <div className="glass-panel overflow-hidden rounded-2xl p-6 sm:p-8">
-                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
-                    Contribution Activity
-                  </h3>
-                  <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-                    Last 12 months, tinted to match the portfolio palette.
-                  </p>
-                  <div className="mt-6">
-                    <ContributionHeatmap weeks={calendar.weeks} />
-                  </div>
-                </div>
+                <ContributionHeatmapCard years={calendar.years} />
               </Reveal>
             )}
 

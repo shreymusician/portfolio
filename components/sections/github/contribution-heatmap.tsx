@@ -1,31 +1,59 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import type { ContributionDay } from "@/lib/github";
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+/** One shared viewport observer for the whole grid, staggered per week-column rather than per day-cell. */
+const gridVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.012 } },
+};
+
+const columnVariants: Variants = {
+  hidden: { opacity: 0, y: 8, scale: 0.95, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: EASE_OUT },
+  },
+};
 
 const MONTH_LABELS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-/** Portfolio-tinted scale from dark navy (no activity) up to bright cyan (peak activity). */
-function levelColor(count: number, max: number): string {
-  if (count === 0) return "rgba(148, 163, 184, 0.08)";
-  const ratio = max === 0 ? 0 : count / max;
-  if (ratio <= 0.25) return "#2952e3"; // royal blue
-  if (ratio <= 0.5) return "#3b82f6"; // blue
-  if (ratio <= 0.75) return "#8b5cf6"; // purple
-  return "#38bdf8"; // bright sky/cyan for peak days
+const WEEKDAY_LABELS = ["Mon", "Wed", "Fri"];
+
+const CELL_SIZE = 14;
+const CELL_GAP = 4;
+const STEP = CELL_SIZE + CELL_GAP;
+const LABEL_COL_WIDTH = 34;
+const LABEL_GAP = 12;
+const GRID_OFFSET = LABEL_COL_WIDTH + LABEL_GAP;
+
+/** GitHub's own dark-mode contribution scale -- kept authentic on purpose. */
+const LEVEL_COLORS = [
+  "#161b22", // 0: no activity
+  "#0e4429", // 1: dark green
+  "#006d32", // 2: medium green
+  "#26a641", // 3: bright green
+  "#39d353", // 4: light green (peak)
+];
+
+function levelColor(level: number): string {
+  return LEVEL_COLORS[Math.min(level, LEVEL_COLORS.length - 1)];
 }
 
-export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
-  const [hovered, setHovered] = useState<ContributionDay | null>(null);
+type Hovered = { day: ContributionDay; wi: number; di: number };
 
-  const max = useMemo(
-    () => Math.max(1, ...weeks.flat().map((d) => d.count)),
-    [weeks]
-  );
+export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
+  const [hovered, setHovered] = useState<Hovered | null>(null);
 
   const monthMarkers = useMemo(() => {
     const markers: { index: number; label: string }[] = [];
@@ -44,75 +72,119 @@ export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
 
   return (
     <div className="relative">
-      <div className="relative mb-2 h-4" style={{ marginLeft: "1.75rem" }}>
-        {monthMarkers.map((m) => (
-          <span
-            key={`${m.label}-${m.index}`}
-            className="absolute text-[11px] text-[var(--color-text-secondary)]"
-            style={{ left: `${m.index * 14}px` }}
-          >
-            {m.label}
-          </span>
-        ))}
-      </div>
+      <div className="overflow-x-auto pb-2">
+        <div className="inline-flex min-w-full flex-col gap-2">
+          <div className="relative h-4" style={{ marginLeft: GRID_OFFSET }}>
+            {monthMarkers.map((m) => (
+              <span
+                key={`${m.label}-${m.index}`}
+                className="absolute text-xs text-[var(--color-text-secondary)]"
+                style={{ left: `${m.index * STEP}px` }}
+              >
+                {m.label}
+              </span>
+            ))}
+          </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2">
-        <div className="mt-0.5 flex shrink-0 flex-col justify-between text-[11px] text-[var(--color-text-secondary)]" style={{ height: "98px" }}>
-          <span>Mon</span>
-          <span>Wed</span>
-          <span>Fri</span>
-        </div>
-
-        <div className="flex gap-[3px]">
-          {weeks.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px]">
-              {Array.from({ length: 7 }).map((_, di) => {
-                const day = week.find((d) => d.weekday === di);
-                if (!day) {
-                  return <div key={di} className="h-[13px] w-[13px]" />;
-                }
-                return (
-                  <motion.div
-                    key={day.date}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.5, delay: wi * 0.006, ease: [0.22, 1, 0.36, 1] }}
-                    onMouseEnter={() => setHovered(day)}
-                    onMouseLeave={() => setHovered(null)}
-                    className="h-[13px] w-[13px] cursor-pointer rounded-[3px] transition-transform hover:scale-125"
-                    style={{
-                      background: levelColor(day.count, max),
-                      boxShadow:
-                        day.count > 0
-                          ? `0 0 6px ${levelColor(day.count, max)}55`
-                          : "none",
-                    }}
-                  />
-                );
-              })}
+          <div className="relative flex" style={{ gap: LABEL_GAP }}>
+            <div
+              className="sticky left-0 z-10 flex shrink-0 flex-col justify-between rounded-sm text-xs text-[var(--color-text-secondary)]"
+              style={{
+                width: LABEL_COL_WIDTH,
+                height: STEP * 6 + CELL_SIZE,
+                background:
+                  "linear-gradient(180deg, rgba(20, 27, 51, 0.97), rgba(11, 16, 32, 0.95))",
+              }}
+            >
+              {WEEKDAY_LABELS.map((label) => (
+                <span key={label}>{label}</span>
+              ))}
             </div>
-          ))}
+
+            <motion.div
+              className="relative flex"
+              style={{ gap: CELL_GAP }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              variants={gridVariants}
+            >
+              {weeks.map((week, wi) => (
+                <motion.div
+                  key={wi}
+                  variants={columnVariants}
+                  className="flex flex-col"
+                  style={{ gap: CELL_GAP }}
+                >
+                  {Array.from({ length: 7 }).map((_, di) => {
+                    const day = week.find((d) => d.weekday === di);
+                    if (!day) {
+                      return (
+                        <div key={di} style={{ height: CELL_SIZE, width: CELL_SIZE }} />
+                      );
+                    }
+                    const color = levelColor(day.level);
+                    return (
+                      <div
+                        key={day.date}
+                        onMouseEnter={() => setHovered({ day, wi, di })}
+                        onMouseLeave={() => setHovered(null)}
+                        className="cursor-pointer rounded-[3px] border border-white/[0.06] transition-transform duration-150 hover:scale-125"
+                        style={{
+                          height: CELL_SIZE,
+                          width: CELL_SIZE,
+                          background: color,
+                          boxShadow: day.count > 0 ? `0 0 6px ${color}55` : "none",
+                        }}
+                      />
+                    );
+                  })}
+                </motion.div>
+              ))}
+
+              <AnimatePresence>
+                {hovered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4, scale: 0.94 }}
+                    transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="glass-panel pointer-events-none absolute z-20 whitespace-nowrap rounded-lg border-[var(--color-border-strong)] px-3 py-2 text-xs shadow-[0_12px_30px_-10px_rgba(0,0,0,0.6)]"
+                    style={{
+                      left: hovered.wi * STEP + CELL_SIZE / 2,
+                      top: hovered.di * STEP - 12,
+                      transform: "translate(-50%, -100%)",
+                    }}
+                  >
+                    <p className="font-semibold text-[var(--color-text-primary)]">
+                      {hovered.day.count} Contribution{hovered.day.count === 1 ? "" : "s"}
+                    </p>
+                    <p className="text-[var(--color-text-secondary)]">
+                      {new Date(`${hovered.day.date}T00:00:00Z`).toLocaleDateString(undefined, {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                        timeZone: "UTC",
+                      })}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--color-text-secondary)]">
-        <span className="min-h-[1em]">
-          {hovered
-            ? `${hovered.count} contribution${hovered.count === 1 ? "" : "s"} on ${new Date(hovered.date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`
-            : "Hover a day to see details"}
-        </span>
-        <div className="flex items-center gap-1.5">
-          <span>Less</span>
-          {[0, 0.2, 0.45, 0.7, 1].map((r) => (
-            <span
-              key={r}
-              className="h-[11px] w-[11px] rounded-[3px]"
-              style={{ background: levelColor(r === 0 ? 0 : Math.ceil(r * max), max) }}
-            />
-          ))}
-          <span>More</span>
-        </div>
+      <div className="mt-5 flex flex-wrap items-center justify-end gap-1.5 text-sm text-[var(--color-text-secondary)]">
+        <span>Less</span>
+        {LEVEL_COLORS.map((color, i) => (
+          <span
+            key={i}
+            className="h-[13px] w-[13px] rounded-[3px] border border-white/[0.06]"
+            style={{ background: color }}
+          />
+        ))}
+        <span>More</span>
       </div>
     </div>
   );

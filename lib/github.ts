@@ -156,12 +156,13 @@ export type GitHubProfile = {
   publicRepos: number;
   followers: number;
   following: number;
+  joinedYear: number;
 };
 
 /**
- * Fetches public profile counters (repos, followers, following) via the
- * REST /users endpoint. This data is public and needs no token, so it's
- * fetched independently of the GraphQL-backed contribution calendar below.
+ * Fetches public profile counters (repos, followers, following, join date)
+ * via the REST /users endpoint. This data is public and needs no token, so
+ * it's fetched independently of the contribution calendar below.
  */
 export async function getGitHubProfile(): Promise<GitHubProfile | null> {
   const username = process.env.GITHUB_USERNAME;
@@ -181,12 +182,14 @@ export async function getGitHubProfile(): Promise<GitHubProfile | null> {
       public_repos: number;
       followers: number;
       following: number;
+      created_at: string;
     };
 
     return {
       publicRepos: data.public_repos,
       followers: data.followers,
       following: data.following,
+      joinedYear: new Date(data.created_at).getFullYear(),
     };
   } catch (error) {
     console.error("Failed to fetch GitHub profile:", error);
@@ -198,77 +201,92 @@ export type ContributionDay = {
   date: string;
   count: number;
   weekday: number;
+  /** GitHub's own 0-4 relative-intensity bucket for this day. */
+  level: number;
 };
 
-export type ContributionCalendar = {
+export type ContributionYear = {
+  year: number;
   totalContributions: number;
-  currentStreak: number;
-  longestStreak: number;
   weeks: ContributionDay[][];
 };
 
+export type ContributionCalendar = {
+  /** Descending by year, most recent first. */
+  years: ContributionYear[];
+  /** All-time, not scoped to a single year -- matches how GitHub itself reports streaks. */
+  currentStreak: number;
+  longestStreak: number;
+};
+
 /**
- * Fetches the last 12 months of contribution activity via GitHub's GraphQL
- * API. Unlike the REST endpoints above, GraphQL always requires an
- * authenticated token -- so this returns null (not an empty calendar) when
- * GITHUB_PAT is unset, and the UI hides the heatmap entirely rather than
- * rendering a broken/empty grid.
+ * Fetches full-year contribution activity for every year GitHub has data
+ * for, via a public, unauthenticated mirror of GitHub's contribution graph
+ * (github-contributions-api.jogruber.de). GitHub's own GraphQL API would
+ * require an authenticated token just to read this public data, which isn't
+ * something a portfolio visitor should need to configure -- this endpoint
+ * needs no token and degrades to null (hiding the heatmap) on any failure.
  */
 export async function getContributionCalendar(): Promise<ContributionCalendar | null> {
   const username = process.env.GITHUB_USERNAME;
-  const pat = process.env.GITHUB_PAT;
-  if (!username || !pat) return null;
-
-  const query = `
-    query($login: String!) {
-      user(login: $login) {
-        contributionsCollection {
-          contributionCalendar {
-            totalContributions
-            weeks {
-              contributionDays {
-                date
-                contributionCount
-                weekday
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
+  if (!username) return null;
 
   try {
-    const response = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${pat}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query, variables: { login: username } }),
-      next: { revalidate: REVALIDATE_SECONDS },
-    });
+    const response = await fetch(
+      `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=all`,
+      { next: { revalidate: REVALIDATE_SECONDS } }
+    );
 
     if (!response.ok) return null;
 
-    const json = await response.json();
-    const calendar =
-      json?.data?.user?.contributionsCollection?.contributionCalendar;
-    if (!calendar) return null;
+    const data = (await response.json()) as {
+      total: Record<string, number>;
+      contributions: Array<{ date: string; count: number; level: number }>;
+    };
 
-    const weeks: ContributionDay[][] = calendar.weeks.map(
-      (week: { contributionDays: Array<{ date: string; contributionCount: number; weekday: number }> }) =>
-        week.contributionDays.map((day) => ({
-          date: day.date,
-          count: day.contributionCount,
-          weekday: day.weekday,
-        }))
-    );
+    if (!data.contributions?.length) return null;
 
-    const allDays = weeks.flat();
+    const byYear = new Map<number, Array<{ date: string; count: number; level: number }>>();
+    for (const day of data.contributions) {
+      const year = Number(day.date.slice(0, 4));
+      if (!byYear.has(year)) byYear.set(year, []);
+      byYear.get(year)!.push(day);
+    }
+
+    const years: ContributionYear[] = Array.from(byYear.entries())
+      .sort(([a], [b]) => b - a)
+      .map(([year, days]) => {
+        days.sort((a, b) => a.date.localeCompare(b.date));
+
+        const weeks: ContributionDay[][] = [];
+        let currentWeek: ContributionDay[] = [];
+        for (const day of days) {
+          const weekday = new Date(`${day.date}T00:00:00Z`).getUTCDay();
+          if (weekday === 0 && currentWeek.length > 0) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+          }
+          currentWeek.push({ date: day.date, count: day.count, weekday, level: day.level });
+        }
+        if (currentWeek.length > 0) weeks.push(currentWeek);
+
+        const totalContributions =
+          data.total?.[String(year)] ?? days.reduce((sum, d) => sum + d.count, 0);
+
+        return { year, totalContributions, weeks };
+      });
+
+    // ?y=all returns each full calendar year (Jan-Dec), including days after
+    // today with a legitimate 0 count -- exclude those before computing
+    // streaks, or the "today may be 0" allowance below skips the wrong day.
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const chronological = [...data.contributions]
+      .filter((d) => d.date <= todayStr)
+      .sort((a, b) => a.date.localeCompare(b.date));
+
     let longestStreak = 0;
     let running = 0;
-    for (const day of allDays) {
+    for (const day of chronological) {
       if (day.count > 0) {
         running += 1;
         longestStreak = Math.max(longestStreak, running);
@@ -278,10 +296,10 @@ export async function getContributionCalendar(): Promise<ContributionCalendar | 
     }
 
     let currentStreak = 0;
-    for (let i = allDays.length - 1; i >= 0; i -= 1) {
-      if (allDays[i].count > 0) {
+    for (let i = chronological.length - 1; i >= 0; i -= 1) {
+      if (chronological[i].count > 0) {
         currentStreak += 1;
-      } else if (i === allDays.length - 1) {
+      } else if (i === chronological.length - 1) {
         // Today may legitimately have zero contributions yet -- skip it
         // without breaking the streak count.
         continue;
@@ -290,12 +308,7 @@ export async function getContributionCalendar(): Promise<ContributionCalendar | 
       }
     }
 
-    return {
-      totalContributions: calendar.totalContributions,
-      currentStreak,
-      longestStreak,
-      weeks,
-    };
+    return { years, currentStreak, longestStreak };
   } catch (error) {
     console.error("Failed to fetch GitHub contribution calendar:", error);
     return null;
