@@ -37,7 +37,6 @@ const identityLine: IdentityToken[] = [
 ];
 
 const socialProof = [
-  { icon: "🏆", text: "State-Level Hackathon Participant" },
   { icon: "📜", text: "20+ Certifications" },
   { icon: "💻", text: "13+ Public Projects" },
   { icon: "🎥", text: "Building in Public @ SR Builds" },

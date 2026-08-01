@@ -19,19 +19,6 @@ const PINNED_REPO_NAMES = [
   "medilens-ai",
 ];
 
-function formatRelativeDate(iso: string): string {
-  const date = new Date(iso);
-  const diffMs = Date.now() - date.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (diffDays <= 0) return "today";
-  if (diffDays === 1) return "yesterday";
-  if (diffDays < 30) return `${diffDays} days ago`;
-  const diffMonths = Math.floor(diffDays / 30);
-  if (diffMonths < 12) return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
-  const diffYears = Math.floor(diffMonths / 12);
-  return `${diffYears} year${diffYears > 1 ? "s" : ""} ago`;
-}
-
 export async function GitHubSection() {
   const [repos, profile, calendar] = await Promise.all([
     getGitHubRepos(),
@@ -55,8 +42,6 @@ export async function GitHubSection() {
       }
     }
   }
-
-  const topRepos = nonForkRepos.filter((r) => !pinnedIds.has(r.id)).slice(0, 9);
 
   const stats: GithubStat[] = [];
   if (profile) {
@@ -179,45 +164,6 @@ export async function GitHubSection() {
               </Reveal>
             )}
 
-            {topRepos.length > 0 && (
-              <div className="mt-16">
-                <Reveal>
-                  <h3 className="text-base font-semibold text-[var(--color-text-secondary)]">
-                    More Repositories
-                  </h3>
-                </Reveal>
-                <RevealGroup className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {topRepos.map((repo) => (
-                    <RevealItem key={repo.id}>
-                      <a
-                        href={repo.htmlUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="glass-panel flex h-full flex-col gap-2 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--color-accent)] hover:shadow-[0_20px_60px_-15px_var(--glow-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="truncate font-mono text-base font-medium text-[var(--color-text-primary)]">
-                            {repo.name}
-                          </span>
-                          <span className="flex shrink-0 items-center gap-1 text-sm text-[var(--color-highlight)]">
-                            ★ {repo.stars}
-                          </span>
-                        </div>
-                        {repo.description && (
-                          <p className="line-clamp-2 text-base text-[var(--color-text-secondary)]">
-                            {repo.description}
-                          </p>
-                        )}
-                        <div className="mt-auto flex items-center justify-between pt-1 text-sm text-[var(--color-text-secondary)]">
-                          <span>{repo.language ?? "—"}</span>
-                          <span>Updated {formatRelativeDate(repo.updatedAt)}</span>
-                        </div>
-                      </a>
-                    </RevealItem>
-                  ))}
-                </RevealGroup>
-              </div>
-            )}
           </>
         )}
       </div>
