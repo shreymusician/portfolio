@@ -163,7 +163,6 @@ export async function GitHubSection() {
                 </div>
               </Reveal>
             )}
-
           </>
         )}
       </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Sora } from "next/font/google";
 import { siteConfig } from "@/lib/site-config";
 import { AmbientBackground } from "@/components/ui/ambient-background";
 import "./globals.css";
@@ -12,6 +12,14 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+/** Display font reserved for the personal brand wordmark -- premium,
+ * geometric, and distinct from the Geist body copy used everywhere else. */
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -33,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <AmbientBackground />
