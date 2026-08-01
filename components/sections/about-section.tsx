@@ -18,6 +18,36 @@ const roboticsTools = [
   "Hardware Design",
 ];
 
+/** Reverse-chronological education history for the timeline -- newest
+ * milestone first. Each entry's `glow` picks its icon-ring accent from the
+ * portfolio's existing palette (blue / purple / sky / orange). */
+const educationTimeline = [
+  {
+    icon: "🎓",
+    glow: "var(--color-accent)",
+    degree: "Bachelor of Engineering in Artificial Intelligence and Machine Learning",
+    period: "August 2024 -- April 2028 (Current)",
+    institution: "Adichunchanagiri Institute of Technology, Chikkamagaluru",
+    score: "CGPA: 9.0",
+  },
+  {
+    icon: "📘",
+    glow: "var(--color-accent-2)",
+    degree: "Higher Secondary",
+    period: "Passed Out -- April 2024",
+    institution: "Sri Sai Angels PU College, Sirgapura, Chikkamagaluru",
+    score: "Percentage: 89%",
+  },
+  {
+    icon: "🏫",
+    glow: "var(--color-sky)",
+    degree: "Class 10",
+    period: "Passed Out -- July 2022",
+    institution: "Sri Sai Angels School, Sirgapura, Chikkamagaluru",
+    score: "Percentage: 84.6%",
+  },
+] as const;
+
 export function AboutSection() {
   return (
     <section id="about" className="relative overflow-hidden px-4 py-28 sm:px-6">
@@ -69,45 +99,53 @@ export function AboutSection() {
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <Reveal delay={0.15}>
-            <div className="glass-panel h-full rounded-2xl p-6 sm:p-8">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
-                Education
-              </h3>
-              <p className="mt-3 font-medium text-[var(--color-text-primary)]">
-                {siteConfig.education.degree}
-              </p>
-              <p className="mt-1 text-base text-[var(--color-text-secondary)]">
-                {siteConfig.education.school} · {siteConfig.education.period}
-              </p>
-            </div>
-          </Reveal>
+        <Reveal delay={0.1} className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="text-[clamp(1.6rem,3.2vw,2.25rem)] font-bold tracking-tight text-[var(--color-text-primary)]">
+              Education <span className="text-gradient">Journey</span>
+            </h3>
+            <p className="mt-3 text-base text-[var(--color-text-secondary)]">
+              The academic foundation behind my engineering journey.
+            </p>
+          </div>
 
-          <Reveal delay={0.2}>
-            <div className="glass-panel h-full rounded-2xl p-6 sm:p-8">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
-                Highlights
-              </h3>
-              <ol className="mt-4 flex flex-col gap-4 border-l border-[var(--color-border)] pl-5">
-                {siteConfig.highlights.slice(0, 2).map((item) => (
-                  <li key={item.title} className="relative">
-                    <span
-                      aria-hidden="true"
-                      className="absolute -left-[1.4rem] top-1.5 h-2 w-2 rounded-full bg-[var(--color-highlight)]"
-                    />
+          <div className="relative mx-auto mt-12 max-w-2xl">
+            {/* Timeline spine: thin blue-to-purple gradient line. */}
+            <div
+              aria-hidden="true"
+              className="absolute left-[27px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-sky)]/40"
+            />
+
+            <RevealGroup className="flex flex-col gap-8">
+              {educationTimeline.map((entry) => (
+                <RevealItem key={entry.degree} className="relative flex gap-6">
+                  <span
+                    aria-hidden="true"
+                    className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface)] text-2xl"
+                    style={{ boxShadow: `0 0 22px 2px ${entry.glow}33` }}
+                  >
+                    {entry.icon}
+                  </span>
+
+                  <div className="glass-panel flex-1 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/60 hover:shadow-[0_12px_36px_-8px_var(--glow-purple)] sm:p-8">
                     <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-                      {item.date}
+                      {entry.period}
                     </p>
-                    <p className="text-base font-medium text-[var(--color-text-primary)]">
-                      {item.title}
+                    <p className="mt-2 text-lg font-semibold text-[var(--color-text-primary)]">
+                      {entry.degree}
                     </p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </Reveal>
-        </div>
+                    <p className="mt-2 text-base text-[var(--color-text-secondary)]">
+                      {entry.institution}
+                    </p>
+                    <p className="mt-3 inline-flex rounded-full border border-[var(--color-border)] bg-white/[0.03] px-3 py-1 font-mono text-sm text-[var(--color-accent-hover)]">
+                      {entry.score}
+                    </p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        </Reveal>
 
         <Reveal delay={0.1} className="mt-10">
           <div className="glass-panel rounded-2xl p-6 sm:p-8">

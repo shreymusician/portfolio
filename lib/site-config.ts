@@ -11,7 +11,7 @@ export const siteConfig = {
   profileImageUrl: "/media/profile_pic.png",
   title: "AI/ML Engineer & Builder",
   tagline:
-    "I learn by building. Passionate about solving real-world problems with AI — from healthcare automation to intelligent systems.",
+    "I build intelligent AI systems, full-stack applications, and automation tools that solve real-world problems — from healthcare automation to developer productivity.",
   email: "buildathon111@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/shreyas-r-s-394347386",
   githubUrl: `https://github.com/${githubUsername}`,
