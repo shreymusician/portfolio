@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { CountUp } from "./count-up";
 
-export type GithubStat = {
+export type StatItem = {
   label: string;
   value: number;
   accent?: "blue" | "purple" | "sky" | "orange";
@@ -11,14 +11,14 @@ export type GithubStat = {
   raw?: boolean;
 };
 
-const accentGlow: Record<NonNullable<GithubStat["accent"]>, string> = {
+const accentGlow: Record<NonNullable<StatItem["accent"]>, string> = {
   blue: "var(--glow-blue)",
   purple: "var(--glow-purple)",
   sky: "var(--glow-sky)",
   orange: "var(--glow-orange)",
 };
 
-export function StatsGrid({ stats }: { stats: GithubStat[] }) {
+export function StatGrid({ stats }: { stats: StatItem[] }) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
       {stats.map((stat, i) => (

@@ -7,6 +7,7 @@ import { Logo } from "@/components/ui/logo";
 const sections = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
+  { id: "sr-builds", label: "SR Builds" },
   { id: "github", label: "GitHub" },
   { id: "projects", label: "Projects" },
   { id: "certifications", label: "Certifications" },

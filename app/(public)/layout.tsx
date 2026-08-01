@@ -1,5 +1,6 @@
 import { siteConfig } from "@/lib/site-config";
 import { SiteNav } from "@/components/layout/site-nav";
+import { FloatingWhatsApp } from "@/components/ui/floating-whatsapp";
 
 export default function PublicLayout({
   children,
@@ -53,6 +54,8 @@ export default function PublicLayout({
           </nav>
         </div>
       </footer>
+
+      <FloatingWhatsApp />
     </div>
   );
 }

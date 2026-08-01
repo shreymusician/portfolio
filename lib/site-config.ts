@@ -13,11 +13,19 @@ export const siteConfig = {
   tagline:
     "I build intelligent AI systems, full-stack applications, and automation tools that solve real-world problems — from healthcare automation to developer productivity.",
   email: "buildathon111@gmail.com",
+  whatsappNumber: "919019990664",
   linkedinUrl: "https://www.linkedin.com/in/shreyas-r-s-394347386",
   githubUrl: `https://github.com/${githubUsername}`,
   githubUsername,
   youtubeUrl: "https://www.youtube.com/@shreyasrangadhol",
   resumeUrl: "/resume.pdf",
+
+  srBuilds: {
+    name: "SR Builds",
+    tagline: "Engineering, documented.",
+    description:
+      "SR Builds is where I build in public -- project breakdowns, tutorials, and behind-the-scenes look at how ideas turn into working software. Software isn't just something I ship; it's something I teach.",
+  },
 
   bio: [
     "I'm a 3rd-year AI/ML Engineering student at Adichunchanagiri Institute of Technology, Karnataka. I believe in learning by building — whenever I pick up a technology, I create something practical with it.",

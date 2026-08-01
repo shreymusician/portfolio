@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/site-config";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
-import { StatsGrid, type GithubStat } from "@/components/sections/github/stats-grid";
+import { StatGrid, type StatItem } from "@/components/ui/stat-grid";
 import { ContributionHeatmapCard } from "@/components/sections/github/contribution-heatmap-card";
 import { PinnedRepoCard } from "@/components/sections/github/pinned-repo-card";
 
@@ -43,7 +43,7 @@ export async function GitHubSection() {
     }
   }
 
-  const stats: GithubStat[] = [];
+  const stats: StatItem[] = [];
   if (profile) {
     stats.push({ label: "Public Repos", value: profile.publicRepos, accent: "blue" });
   }
@@ -109,7 +109,7 @@ export async function GitHubSection() {
           <>
             {stats.length > 0 && (
               <div className="mt-16">
-                <StatsGrid stats={stats} />
+                <StatGrid stats={stats} />
               </div>
             )}
 

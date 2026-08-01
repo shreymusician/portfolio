@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         hostname: "i.ytimg.com", // YouTube video thumbnails (SR Builds section)
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "yt3.googleusercontent.com", // YouTube channel avatar (SR Builds section)
+        pathname: "/**",
+      },
     ],
   },
 };
