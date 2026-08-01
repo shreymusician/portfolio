@@ -13,11 +13,11 @@ export default function HomePage() {
       <SectionDivider />
       <AboutSection />
       <SectionDivider />
+      <GitHubSection />
+      <SectionDivider />
       <ProjectsSection />
       <SectionDivider />
       <CertificationsSection />
-      <SectionDivider />
-      <GitHubSection />
       <SectionDivider />
       <ContactSection />
     </>

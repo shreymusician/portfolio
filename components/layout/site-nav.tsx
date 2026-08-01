@@ -7,9 +7,9 @@ import { Logo } from "@/components/ui/logo";
 const sections = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
+  { id: "github", label: "GitHub" },
   { id: "projects", label: "Projects" },
   { id: "certifications", label: "Certifications" },
-  { id: "github", label: "GitHub" },
   { id: "contact", label: "Contact" },
 ];
 
