@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
 
 const WHATSAPP_MESSAGE = "Hi Shreyas! I came across your portfolio and would like to connect.";
@@ -17,6 +17,7 @@ const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURI
  * one shared hover state.
  */
 export function FloatingWhatsApp() {
+  const shouldReduceMotion = useReducedMotion();
   const [hovered, setHovered] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -72,8 +73,12 @@ export function FloatingWhatsApp() {
         onFocus={handleEnter}
         onBlur={handleLeave}
         className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_10px_30px_rgba(0,0,0,0.4)] outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] sm:h-[60px] sm:w-[60px] lg:h-16 lg:w-16"
-        animate={{ y: [0, -4, 0] }}
-        whileHover={{ scale: 1.08, y: -6, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
+        animate={shouldReduceMotion ? undefined : { y: [0, -4, 0] }}
+        whileHover={{
+          scale: 1.08,
+          y: shouldReduceMotion ? 0 : -6,
+          boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
+        }}
         whileTap={{ scale: 0.94 }}
         transition={{
           y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
