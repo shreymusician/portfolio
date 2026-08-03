@@ -5,6 +5,20 @@ function isConfigured(): boolean {
   return Boolean(process.env.YOUTUBE_API_KEY && process.env.YOUTUBE_CHANNEL_ID);
 }
 
+/** Converts an ISO 8601 duration ("PT12M34S") into "12:34" / "1:02:34". */
+function formatDuration(iso: string): string {
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return "0:00";
+  const hours = Number(match[1] ?? 0);
+  const minutes = Number(match[2] ?? 0);
+  const seconds = Number(match[3] ?? 0);
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
 export type YouTubeChannel = {
   id: string;
   title: string;
@@ -79,8 +93,48 @@ export type YouTubeVideo = {
   description: string;
   thumbnailUrl: string;
   publishedAt: string;
+  duration: string;
+  viewCount: number;
   url: string;
 };
+
+type RawVideoItem = {
+  id: string;
+  snippet: {
+    title: string;
+    description: string;
+    publishedAt: string;
+    thumbnails: { high?: { url: string }; default: { url: string } };
+  };
+  contentDetails: { duration: string };
+  statistics: { viewCount: string };
+};
+
+function mapVideoItem(item: RawVideoItem): YouTubeVideo {
+  return {
+    id: item.id,
+    title: item.snippet.title,
+    description: item.snippet.description,
+    thumbnailUrl: item.snippet.thumbnails.high?.url ?? item.snippet.thumbnails.default.url,
+    publishedAt: item.snippet.publishedAt,
+    duration: formatDuration(item.contentDetails.duration),
+    viewCount: Number(item.statistics.viewCount ?? 0),
+    url: `https://www.youtube.com/watch?v=${item.id}`,
+  };
+}
+
+async function fetchVideosByIds(ids: string[]): Promise<Map<string, YouTubeVideo>> {
+  if (ids.length === 0) return new Map();
+
+  const response = await fetch(
+    `${YOUTUBE_API_BASE}/videos?part=snippet,contentDetails,statistics&id=${ids.join(",")}&key=${process.env.YOUTUBE_API_KEY}`,
+    { next: { revalidate: REVALIDATE_SECONDS } }
+  );
+  if (!response.ok) return new Map();
+
+  const data = (await response.json()) as { items: RawVideoItem[] };
+  return new Map((data.items ?? []).map((item) => [item.id, mapVideoItem(item)]));
+}
 
 async function getUploadsPlaylistId(): Promise<string | null> {
   try {
@@ -102,8 +156,10 @@ async function getUploadsPlaylistId(): Promise<string | null> {
 
 /**
  * Fetches the most recent uploads via the channel's uploads playlist.
- * Returns an empty array (never throws) if unconfigured or the request
- * fails, matching getGitHubRepos's degrade-to-empty-state behavior.
+ * playlistItems only carries basic snippet data, so this resolves video ids
+ * first (in upload order) then batches a single videos.list call for
+ * duration/view-count/full snippet -- 2 requests total, never N+1. Returns
+ * an empty array (never throws) if unconfigured or either request fails.
  */
 export async function getLatestVideos(limit = 6): Promise<YouTubeVideo[]> {
   if (!isConfigured()) return [];
@@ -113,31 +169,21 @@ export async function getLatestVideos(limit = 6): Promise<YouTubeVideo[]> {
     if (!uploadsPlaylistId) return [];
 
     const response = await fetch(
-      `${YOUTUBE_API_BASE}/playlistItems?part=snippet&maxResults=${limit}&playlistId=${uploadsPlaylistId}&key=${process.env.YOUTUBE_API_KEY}`,
+      `${YOUTUBE_API_BASE}/playlistItems?part=contentDetails&maxResults=${limit}&playlistId=${uploadsPlaylistId}&key=${process.env.YOUTUBE_API_KEY}`,
       { next: { revalidate: REVALIDATE_SECONDS } }
     );
     if (!response.ok) return [];
 
     const data = (await response.json()) as {
-      items: Array<{
-        snippet: {
-          title: string;
-          description: string;
-          publishedAt: string;
-          thumbnails: { high?: { url: string }; default: { url: string } };
-          resourceId: { videoId: string };
-        };
-      }>;
+      items: Array<{ contentDetails: { videoId: string } }>;
     };
+    const orderedIds = (data.items ?? []).map((item) => item.contentDetails.videoId);
+    if (orderedIds.length === 0) return [];
 
-    return (data.items ?? []).map((item) => ({
-      id: item.snippet.resourceId.videoId,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      thumbnailUrl: item.snippet.thumbnails.high?.url ?? item.snippet.thumbnails.default.url,
-      publishedAt: item.snippet.publishedAt,
-      url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`,
-    }));
+    const videosById = await fetchVideosByIds(orderedIds);
+    return orderedIds
+      .map((id) => videosById.get(id))
+      .filter((video): video is YouTubeVideo => Boolean(video));
   } catch (error) {
     console.error("Failed to fetch latest YouTube videos:", error);
     return [];
@@ -159,35 +205,8 @@ export async function getFeaturedVideo(): Promise<YouTubeVideo | null> {
   }
 
   try {
-    const response = await fetch(
-      `${YOUTUBE_API_BASE}/videos?part=snippet&id=${pinnedId}&key=${process.env.YOUTUBE_API_KEY}`,
-      { next: { revalidate: REVALIDATE_SECONDS } }
-    );
-    if (!response.ok) return null;
-
-    const data = (await response.json()) as {
-      items: Array<{
-        id: string;
-        snippet: {
-          title: string;
-          description: string;
-          publishedAt: string;
-          thumbnails: { high?: { url: string }; default: { url: string } };
-        };
-      }>;
-    };
-
-    const video = data.items?.[0];
-    if (!video) return null;
-
-    return {
-      id: video.id,
-      title: video.snippet.title,
-      description: video.snippet.description,
-      thumbnailUrl: video.snippet.thumbnails.high?.url ?? video.snippet.thumbnails.default.url,
-      publishedAt: video.snippet.publishedAt,
-      url: `https://www.youtube.com/watch?v=${video.id}`,
-    };
+    const videosById = await fetchVideosByIds([pinnedId]);
+    return videosById.get(pinnedId) ?? null;
   } catch (error) {
     console.error("Failed to fetch featured YouTube video:", error);
     return null;
@@ -197,6 +216,7 @@ export async function getFeaturedVideo(): Promise<YouTubeVideo | null> {
 export type YouTubePlaylist = {
   id: string;
   title: string;
+  description: string;
   thumbnailUrl: string;
   itemCount: number;
   url: string;
@@ -221,6 +241,7 @@ export async function getPlaylists(limit = 6): Promise<YouTubePlaylist[]> {
         id: string;
         snippet: {
           title: string;
+          description: string;
           thumbnails: { high?: { url: string }; default: { url: string } };
         };
         contentDetails: { itemCount: number };
@@ -230,6 +251,7 @@ export async function getPlaylists(limit = 6): Promise<YouTubePlaylist[]> {
     return (data.items ?? []).map((item) => ({
       id: item.id,
       title: item.snippet.title,
+      description: item.snippet.description,
       thumbnailUrl: item.snippet.thumbnails.high?.url ?? item.snippet.thumbnails.default.url,
       itemCount: item.contentDetails.itemCount,
       url: `https://www.youtube.com/playlist?list=${item.id}`,

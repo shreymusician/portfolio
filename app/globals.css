@@ -31,6 +31,7 @@
   --glow-purple: rgba(139, 92, 246, 0.32);
   --glow-sky: rgba(56, 189, 248, 0.3);
   --glow-orange: rgba(251, 146, 60, 0.28);
+  --glow-pink: rgba(236, 72, 153, 0.28);
 }
 
 @theme inline {
