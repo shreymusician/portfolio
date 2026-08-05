@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/ui/logo";
 
@@ -18,6 +18,7 @@ export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -25,6 +26,36 @@ export function SiteNav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Lock body scroll while the mobile menu is open so the page behind it
+  // can't be dragged/scrolled on touch devices.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [menuOpen]);
+
+  // Close the mobile menu on outside click/tap or Escape.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -54,6 +85,7 @@ export function SiteNav() {
 
   return (
     <header
+      ref={headerRef}
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         scrolled ? "glass-nav border-b border-[var(--color-border)]" : "bg-transparent"
       }`}
@@ -123,7 +155,7 @@ export function SiteNav() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="glass-nav overflow-hidden border-b border-[var(--color-border)] md:hidden"
+            className="glass-nav max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-border)] md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
               {sections.map((section) => (

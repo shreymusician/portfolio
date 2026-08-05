@@ -106,7 +106,7 @@ export function ContributionHeatmap({ weeks }: { weeks: ContributionDay[][] }) {
               style={{ gap: CELL_GAP }}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={gridVariants}
             >
               {weeks.map((week, wi) => (

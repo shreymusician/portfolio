@@ -58,12 +58,15 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
   position: relative;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Layered ambient background: mesh gradients + soft glows + subtle noise. */

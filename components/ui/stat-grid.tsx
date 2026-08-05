@@ -26,7 +26,7 @@ export function StatGrid({ stats }: { stats: StatItem[] }) {
           key={stat.label}
           initial={{ opacity: 0, y: 28, scale: 0.97, filter: "blur(8px)" }}
           whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
           whileHover={{ y: -4 }}
           className="glass-panel rounded-2xl p-5 text-center transition-shadow duration-300 hover:shadow-[0_16px_40px_-12px_var(--stat-glow)]"

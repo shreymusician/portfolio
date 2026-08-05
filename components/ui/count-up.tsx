@@ -5,7 +5,7 @@ import { useInView } from "framer-motion";
 
 export function CountUp({ value, duration = 1.2 }: { value: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const inView = useInView(ref, { once: true, amount: 0.5 });
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
